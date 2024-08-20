@@ -112,14 +112,26 @@
     </form>
 
     <?php
+    function calculatePower($voltage, $current) {
+        return $voltage * $current;
+    }
+
+    function calculateEnergyPerHour($power) {
+        return $power / 1000;
+    }
+
+    function calculateCostPerHour($energyPerHour, $rate) {
+        return $energyPerHour * ($rate / 100);
+    }
+
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $voltage = floatval($_POST['voltage']);
         $current = floatval($_POST['current']);
         $rate = floatval($_POST['rate']);
 
-        $power = $voltage * $current; // in Watts
-        $energyPerHour = ($power / 1000); // in kWh
-        $totalPerHour = ($energyPerHour * ($rate / 100)); // in RM
+        $power = calculatePower($voltage, $current);
+        $energyPerHour = calculateEnergyPerHour($power);
+        $totalPerHour = calculateCostPerHour($energyPerHour, $rate);
 
         echo "<div class='result-section'>";
         echo "<h4>Results</h4>";
